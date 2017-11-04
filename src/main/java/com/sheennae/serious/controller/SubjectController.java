@@ -31,7 +31,7 @@ public class SubjectController {
     }
 
 
-    @RequestMapping("/")
+    @RequestMapping("")
     public @ResponseBody BaseListModel<SubjectModel> getSubjects(@RequestParam(name = "cursor", required = false, defaultValue = "0")
                                                                              String cursor) {
 
