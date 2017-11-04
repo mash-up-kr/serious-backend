@@ -1,5 +1,7 @@
 package com.sheennae.serious.model.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,13 +13,14 @@ public class UserColorModel {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	@JsonIgnore
 	private int id;
 	
 	
 	@Column(name = "type")
 	private UserColor type;
 	
-	
+
 	@Column(name = "code")
 	private String code;
 

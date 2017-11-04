@@ -30,154 +30,116 @@ public class PostModel {
 	
 	@ManyToOne
 	@JoinColumn(name = "subjectId", foreignKey = @ForeignKey(name = "FK_Post_Subject"))
-	private SubjectModel subjectId;
+	private SubjectModel subject;
 	
 	
 	@ManyToOne
 	@JoinColumn(name = "userId", foreignKey = @ForeignKey(name = "FK_Post_User"))
-	private UserModel userId;
+	private UserModel user;
 	
 	
 	@ManyToOne
 	@JoinColumn(name = "voteId", foreignKey = @ForeignKey(name = "FK_Post_PostVote"))
-	private PostVoteModel voteId;
+	private PostVoteModel vote;
 	
 	
 	@Column(name = "enableChat")
 	private boolean enableChat;
 
-
 	public int getId() {
 		return id;
 	}
-
 
 	public void setId(int id) {
 		this.id = id;
 	}
 
-
 	public String getTitle() {
 		return title;
 	}
-
 
 	public void setTitle(String title) {
 		this.title = title;
 	}
 
-
 	public String getContents() {
 		return contents;
 	}
-
 
 	public void setContents(String contents) {
 		this.contents = contents;
 	}
 
-
-	public SubjectModel getSubjectId() {
-		return subjectId;
+	public SubjectModel getSubject() {
+		return subject;
 	}
 
-
-	public void setSubjectId(SubjectModel subjectId) {
-		this.subjectId = subjectId;
+	public void setSubject(SubjectModel subject) {
+		this.subject = subject;
 	}
 
-
-	public UserModel getUserId() {
-		return userId;
+	public UserModel getUser() {
+		return user;
 	}
 
-
-	public void setUserId(UserModel userId) {
-		this.userId = userId;
+	public void setUser(UserModel user) {
+		this.user = user;
 	}
 
-
-	public PostVoteModel getVoteId() {
-		return voteId;
+	public PostVoteModel getVote() {
+		return vote;
 	}
 
-
-	public void setVoteId(PostVoteModel voteId) {
-		this.voteId = voteId;
+	public void setVote(PostVoteModel vote) {
+		this.vote = vote;
 	}
-
 
 	public boolean isEnableChat() {
 		return enableChat;
 	}
 
-
 	public void setEnableChat(boolean enableChat) {
 		this.enableChat = enableChat;
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		PostModel postModel = (PostModel) o;
+
+		if (id != postModel.id) return false;
+		if (enableChat != postModel.enableChat) return false;
+		if (title != null ? !title.equals(postModel.title) : postModel.title != null) return false;
+		if (contents != null ? !contents.equals(postModel.contents) : postModel.contents != null) return false;
+		if (subject != null ? !subject.equals(postModel.subject) : postModel.subject != null) return false;
+		if (user != null ? !user.equals(postModel.user) : postModel.user != null) return false;
+		return vote != null ? vote.equals(postModel.vote) : postModel.vote == null;
+	}
 
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((contents == null) ? 0 : contents.hashCode());
-		result = prime * result + (enableChat ? 1231 : 1237);
-		result = prime * result + id;
-		result = prime * result + ((subjectId == null) ? 0 : subjectId.hashCode());
-		result = prime * result + ((title == null) ? 0 : title.hashCode());
-		result = prime * result + ((userId == null) ? 0 : userId.hashCode());
-		result = prime * result + ((voteId == null) ? 0 : voteId.hashCode());
+		int result = id;
+		result = 31 * result + (title != null ? title.hashCode() : 0);
+		result = 31 * result + (contents != null ? contents.hashCode() : 0);
+		result = 31 * result + (subject != null ? subject.hashCode() : 0);
+		result = 31 * result + (user != null ? user.hashCode() : 0);
+		result = 31 * result + (vote != null ? vote.hashCode() : 0);
+		result = 31 * result + (enableChat ? 1 : 0);
 		return result;
 	}
 
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		PostModel other = (PostModel) obj;
-		if (contents == null) {
-			if (other.contents != null)
-				return false;
-		} else if (!contents.equals(other.contents))
-			return false;
-		if (enableChat != other.enableChat)
-			return false;
-		if (id != other.id)
-			return false;
-		if (subjectId == null) {
-			if (other.subjectId != null)
-				return false;
-		} else if (!subjectId.equals(other.subjectId))
-			return false;
-		if (title == null) {
-			if (other.title != null)
-				return false;
-		} else if (!title.equals(other.title))
-			return false;
-		if (userId == null) {
-			if (other.userId != null)
-				return false;
-		} else if (!userId.equals(other.userId))
-			return false;
-		if (voteId == null) {
-			if (other.voteId != null)
-				return false;
-		} else if (!voteId.equals(other.voteId))
-			return false;
-		return true;
-	}
-
-
 	@Override
 	public String toString() {
-		return "PostModel [id=" + id + ", title=" + title + ", contents=" + contents + ", subjectId=" + subjectId
-				+ ", userId=" + userId + ", voteId=" + voteId + ", enableChat=" + enableChat + "]";
+		return "PostModel{" +
+				"id=" + id +
+				", title='" + title + '\'' +
+				", contents='" + contents + '\'' +
+				", subject=" + subject +
+				", user=" + user +
+				", vote=" + vote +
+				", enableChat=" + enableChat +
+				'}';
 	}
-	
 }
