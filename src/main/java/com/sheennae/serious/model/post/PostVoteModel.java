@@ -2,6 +2,8 @@ package com.sheennae.serious.model.post;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -13,7 +15,7 @@ public class PostVoteModel {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 	
-	
+	@Enumerated(EnumType.STRING)
 	@Column(name = "type", nullable = false)
 	private PostVote type;
 

@@ -1,14 +1,18 @@
 package com.sheennae.serious.model.user;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity(name = "UserColor")
+@Table(name="user_color")
 public class UserColorModel {
 
 	@Id
@@ -16,8 +20,8 @@ public class UserColorModel {
 	@JsonIgnore
 	private int id;
 	
-	
-	@Column(name = "type")
+	@Enumerated(EnumType.STRING)
+	@Column(name = "type", nullable = false)
 	private UserColor type;
 	
 
