@@ -50,7 +50,7 @@ public class UserController {
         return userRepository.save(userModel);
     }	
 
-    //test
+    //test\//zz
     @PostMapping("/user/register/device/ios")
     public void registerDevice() {
 
