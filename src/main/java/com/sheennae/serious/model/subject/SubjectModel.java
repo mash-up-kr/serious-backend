@@ -2,29 +2,25 @@ package com.sheennae.serious.model.subject;
 
 import java.time.LocalDateTime;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.PrePersist;
+import javax.persistence.*;
 
-@Entity(name = "Subject")
+@Entity
+@Table(name = "subject")
 public class SubjectModel {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
-	
-	
+
+
 	@Column(name = "title", nullable = false)
 	private String title;
-	
-	
+
+
 	@Column(name = "createAt", insertable=true, updatable=false, nullable=false)
 	private LocalDateTime createAt;
-	
-	
+
+
 	@PrePersist
 	public void persist() {
 		this.createAt = LocalDateTime.now();
@@ -101,6 +97,6 @@ public class SubjectModel {
 	public String toString() {
 		return "SubjectModel [id=" + id + ", title=" + title + ", createAt=" + createAt + "]";
 	}
-	
-	
+
+
 }

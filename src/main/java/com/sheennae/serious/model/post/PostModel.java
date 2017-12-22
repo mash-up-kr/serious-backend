@@ -18,31 +18,31 @@ public class PostModel {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
-	
-	
+
+
 	@Column(name = "title", nullable = false)
 	private String title;
-	
-	
+
+
 	@Column(name = "contents", nullable = false)
 	private String contents;
-	
-	
+
+
 	@ManyToOne
 	@JoinColumn(name = "subjectId", foreignKey = @ForeignKey(name = "FK_Post_Subject"))
 	private SubjectModel subject;
-	
-	
+
+
 	@ManyToOne
 	@JoinColumn(name = "userId", foreignKey = @ForeignKey(name = "FK_Post_User"))
 	private UserModel user;
-	
-	
+
+
 	@ManyToOne
 	@JoinColumn(name = "voteId", foreignKey = @ForeignKey(name = "FK_Post_PostVote"))
 	private PostVoteModel vote;
-	
-	
+
+
 	@Column(name = "enableChat")
 	private boolean enableChat;
 

@@ -3,18 +3,10 @@ package com.sheennae.serious.controller;
 import com.sheennae.serious.dao.PostRepository;
 import com.sheennae.serious.model.BaseListModel;
 import com.sheennae.serious.model.post.PostModel;
-import com.sheennae.serious.model.post.PostVote;
-import com.sheennae.serious.model.post.PostVoteModel;
-import com.sheennae.serious.model.subject.SubjectModel;
-import com.sheennae.serious.model.user.Gender;
-import com.sheennae.serious.model.user.UserColor;
-import com.sheennae.serious.model.user.UserColorModel;
-import com.sheennae.serious.model.user.UserModel;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
