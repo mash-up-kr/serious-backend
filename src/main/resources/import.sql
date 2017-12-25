@@ -8,4 +8,4 @@ INSERT INTO bias (type) VALUES ('MID');
 INSERT INTO bias (type) VALUES ('RIGHT');
 INSERT INTO bias (type) VALUES ('EXTREME_RIGHT');
 
-INSERT INTO subject (title, create_at) VALUES ('노룩패스 실화인가', now());
+INSERT INTO subject (title, created_at) VALUES ('노룩패스 실화인가', now());

@@ -8,5 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 public interface BiasRepository extends JpaRepository<BiasModel, Integer> {
+
     Optional<BiasModel> findByType(BiasType type);
+
 }

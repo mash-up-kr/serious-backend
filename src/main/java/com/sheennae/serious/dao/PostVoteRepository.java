@@ -12,4 +12,5 @@ import java.util.Optional;
 public interface PostVoteRepository extends JpaRepository<PostVoteModel, Integer> {
 
     Optional<PostVoteModel> findPostVoteByType(PostVote type);
+
 }

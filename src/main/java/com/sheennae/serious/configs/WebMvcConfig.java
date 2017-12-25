@@ -42,7 +42,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
     class LocalDateAdapter implements JsonSerializer<LocalDateTime> {
 
         public JsonElement serialize(LocalDateTime date, Type typeOfSrc, JsonSerializationContext context) {
-            return new JsonPrimitive(date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"))); // "yyyy-mm-dd"
+            return new JsonPrimitive(date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")));
         }
     }
 

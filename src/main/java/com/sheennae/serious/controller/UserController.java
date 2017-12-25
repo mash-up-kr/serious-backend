@@ -12,6 +12,7 @@ import java.util.Optional;
 import javax.servlet.http.HttpServletResponse;
 
 @RestController
+@RequestMapping(value = "/user")
 public class UserController {
 
     private final UserRepository userRepository;
@@ -24,7 +25,7 @@ public class UserController {
     }
 
 
-    @RequestMapping(value = "/user/register", method = RequestMethod.POST)
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
     public @ResponseBody UserModel join(@RequestBody UserJoinCommand command, HttpServletResponse response) {
         // TODO 1. command validate
         // TODO 2.     invalid data -> error
@@ -52,7 +53,7 @@ public class UserController {
     }
 
 
-    @PostMapping("/user/register/device/ios")
+    @PostMapping("/register/device/ios")
     public void registerDevice() {
 
     }

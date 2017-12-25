@@ -1,6 +1,7 @@
 package com.sheennae.serious.model.subject;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 import javax.persistence.*;
 
@@ -17,15 +18,26 @@ public class SubjectModel {
 	private String title;
 
 
-	@Column(name = "createAt", insertable=true, updatable=false, nullable=false)
-	private LocalDateTime createAt;
+	@Column(name = "created_at", insertable = true, updatable = false, nullable = false)
+	private LocalDateTime createdAt;
+
+
+	@Column(name="published_at", insertable = true, updatable = false, nullable = true)
+	private LocalDateTime publishedAt;
 
 
 	@PrePersist
 	public void persist() {
-		this.createAt = LocalDateTime.now();
+		this.createdAt = LocalDateTime.now();
 	}
 
+	public LocalDateTime getPublishedAt() {
+		return publishedAt;
+	}
+
+	public void setPublishedAt(LocalDateTime publishedAt) {
+		this.publishedAt = publishedAt;
+	}
 
 	public int getId() {
 		return id;
@@ -47,55 +59,43 @@ public class SubjectModel {
 	}
 
 
-	public LocalDateTime getCreateAt() {
-		return createAt;
+	public LocalDateTime getcreatedAt() {
+		return createdAt;
 	}
 
 
-	public void setCreateAt(LocalDateTime createAt) {
-		this.createAt = createAt;
+	public void setcreatedAt(LocalDateTime createdAt) {
+		this.createdAt = createdAt;
+	}
+
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		SubjectModel that = (SubjectModel) o;
+		return id == that.id &&
+				Objects.equals(title, that.title) &&
+				Objects.equals(createdAt, that.createdAt) &&
+				Objects.equals(publishedAt, that.publishedAt);
 	}
 
 
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((createAt == null) ? 0 : createAt.hashCode());
-		result = prime * result + id;
-		result = prime * result + ((title == null) ? 0 : title.hashCode());
-		return result;
-	}
 
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		SubjectModel other = (SubjectModel) obj;
-		if (createAt == null) {
-			if (other.createAt != null)
-				return false;
-		} else if (!createAt.equals(other.createAt))
-			return false;
-		if (id != other.id)
-			return false;
-		if (title == null) {
-			if (other.title != null)
-				return false;
-		} else if (!title.equals(other.title))
-			return false;
-		return true;
+		return Objects.hash(id, title, createdAt, publishedAt);
 	}
 
 
 	@Override
 	public String toString() {
-		return "SubjectModel [id=" + id + ", title=" + title + ", createAt=" + createAt + "]";
+		return "SubjectModel{" +
+				"id=" + id +
+				", title='" + title + '\'' +
+				", createdAt=" + createdAt +
+				", publishedAt=" + publishedAt +
+				'}';
 	}
 
 
