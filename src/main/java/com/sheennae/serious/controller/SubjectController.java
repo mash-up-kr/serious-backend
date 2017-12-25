@@ -36,8 +36,9 @@ public class SubjectController {
 
 
     @RequestMapping("")
-    public @ResponseBody BaseListModel<SubjectModel> getSubjects(@RequestParam(name = "cursor", required = false, defaultValue = "0")
-                                                                             String cursor) {
+    public @ResponseBody BaseListModel<SubjectModel> getSubjects(
+            @RequestParam(name = "cursor", required = false, defaultValue = "0") String cursor) {
+
         List<SubjectModel> datas = subjectRepository.findAll();
         BaseListModel<SubjectModel> listModel = new BaseListModel<>();
         listModel.setCursor(0);
