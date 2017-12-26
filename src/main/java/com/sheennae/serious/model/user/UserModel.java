@@ -28,7 +28,7 @@ public class UserModel {
 	private LocalDateTime createAt;
 
 	@ManyToOne
-	@JoinColumn(name = "bias_id", foreignKey = @ForeignKey(name = "FK_User_Bias"))
+	@JoinColumn(name = "bias_id", foreignKey = @ForeignKey(name = "FK_User_Bias"), nullable = false)
 	private BiasModel bias;
 
 

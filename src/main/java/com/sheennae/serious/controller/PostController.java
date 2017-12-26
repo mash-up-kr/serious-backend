@@ -1,17 +1,15 @@
 package com.sheennae.serious.controller;
 
-import com.sheennae.serious.dao.PostRepository;
-import com.sheennae.serious.dao.PostVoteRepository;
-import com.sheennae.serious.dao.SubjectRepository;
-import com.sheennae.serious.dao.UserRepository;
+import com.sheennae.serious.dao.*;
 import com.sheennae.serious.model.post.PostModel;
-import com.sheennae.serious.model.post.PostVoteModel;
 import com.sheennae.serious.model.post.command.PostCommand;
+import com.sheennae.serious.model.reaction.SubjectPostReactionModel;
+import com.sheennae.serious.model.reaction.SubjectReactionModel;
 import com.sheennae.serious.model.subject.SubjectModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
+import java.time.LocalDateTime;
 
 
 @RestController
@@ -20,18 +18,24 @@ public class PostController {
 
     private final UserRepository userRepository;
     private final PostRepository postRepository;
-    private final PostVoteRepository postVoteRepository;
     private final SubjectRepository subjectRepository;
-
+    private final SubjectPostReactionRepository subjectPostReactionRepository;
+    private final SubjectReactionRepository subjectReactionRepository;
 
     @Autowired
-    public PostController(UserRepository userRepository, PostRepository postRepository, PostVoteRepository postVoteRepository, SubjectRepository subjectRepository) {
+    public PostController(UserRepository userRepository,
+                          PostRepository postRepository,
+                          SubjectRepository subjectRepository,
+                          SubjectPostReactionRepository subjectPostReactionRepository,
+                          SubjectReactionRepository subjectReactionRepository) {
+
         this.userRepository = userRepository;
         this.postRepository = postRepository;
-        this.postVoteRepository = postVoteRepository;
         this.subjectRepository = subjectRepository;
-    }
+        this.subjectPostReactionRepository = subjectPostReactionRepository;
+        this.subjectReactionRepository = subjectReactionRepository;
 
+    }
 
     @PostMapping("/{subjectId}")
     public @ResponseBody PostModel create(@RequestHeader(value = "userId") String userId,
@@ -41,22 +45,26 @@ public class PostController {
         System.out.println(subjectId);
 
         PostModel post = new PostModel();
+
         post.setTitle(command.getTitle());
         post.setContents(command.getContents());
 
         SubjectModel subjectModel = subjectRepository.findOne(Integer.parseInt(subjectId));
+
         if (subjectModel != null) {
             post.setSubject(subjectModel);
         }
 
         post.setUser(userRepository.findOne(Integer.parseInt(userId)));
-        post.setEnableChat(command.isEnableChat());
-        Optional<PostVoteModel> postVoteModel = postVoteRepository.findPostVoteByType(command.getVote());
-        if (postVoteModel.isPresent()) {
-            post.setVote(postVoteModel.get());
-        }
+        post = postRepository.save(post);
 
-        postRepository.save(post);
+        SubjectPostReactionModel subjectPostReaction = new SubjectPostReactionModel();
+
+        subjectPostReaction.setPost(post);
+        subjectPostReaction.setReactedTime(LocalDateTime.now());
+        subjectPostReaction.setSubject(subjectModel);
+        subjectPostReaction.setSubjectReaction(subjectReactionRepository.findByReactionType(command.getType()).get());
+        subjectPostReactionRepository.save(subjectPostReaction);
 
         return post;
     }

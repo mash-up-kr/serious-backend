@@ -14,11 +14,9 @@ public class BiasModel {
     @JsonIgnore
     private int id;
 
-
     @Enumerated(EnumType.STRING)
     @Column(name = "type", nullable = false)
     private BiasType type;
-
 
     public int getId() {
         return id;
@@ -58,6 +56,5 @@ public class BiasModel {
                 ", type=" + type +
                 '}';
     }
-
 
 }

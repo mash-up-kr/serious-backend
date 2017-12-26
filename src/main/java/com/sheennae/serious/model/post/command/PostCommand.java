@@ -1,59 +1,68 @@
 package com.sheennae.serious.model.post.command;
 
-import com.sheennae.serious.model.post.PostVote;
+
+import com.sheennae.serious.model.reaction.ReactionType;
+
+import java.util.Objects;
 
 public class PostCommand {
 
     private String title;
     private String contents;
-    private PostVote vote;
-    private boolean enableChat;
+    private ReactionType type;
 
     public String getTitle() {
         return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getContents() {
         return contents;
     }
 
-    public PostVote getVote() {
-        return vote;
+    public void setContents(String contents) {
+        this.contents = contents;
     }
 
-    public boolean isEnableChat() {
-        return enableChat;
+    public ReactionType getType() {
+        return type;
+    }
+
+    public void setType(ReactionType type) {
+        this.type = type;
     }
 
     @Override
     public boolean equals(Object o) {
+
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         PostCommand that = (PostCommand) o;
+        return Objects.equals(title, that.title) &&
+                Objects.equals(contents, that.contents) &&
+                type == that.type;
 
-        if (enableChat != that.enableChat) return false;
-        if (title != null ? !title.equals(that.title) : that.title != null) return false;
-        if (contents != null ? !contents.equals(that.contents) : that.contents != null) return false;
-        return vote == that.vote;
     }
 
     @Override
     public int hashCode() {
-        int result = title != null ? title.hashCode() : 0;
-        result = 31 * result + (contents != null ? contents.hashCode() : 0);
-        result = 31 * result + (vote != null ? vote.hashCode() : 0);
-        result = 31 * result + (enableChat ? 1 : 0);
-        return result;
+
+        return Objects.hash(title, contents, type);
+
     }
 
     @Override
     public String toString() {
+
         return "PostCommand{" +
                 "title='" + title + '\'' +
                 ", contents='" + contents + '\'' +
-                ", vote=" + vote +
-                ", enableChat=" + enableChat +
+                ", type=" + type +
                 '}';
+
     }
+
 }

@@ -25,12 +25,12 @@ public class SubjectController {
         this.subjectRepository = subjectRepository;
     }
 
-    @RequestMapping(value = "/{yyyyMMdd}", method = RequestMethod.GET)
-    public @ResponseBody String getSubjectByDate(@PathVariable("yyyyMMdd" ) String date) {
+    @RequestMapping(value = "/{yyyyMMdd}", method = RequestMethod.POST)
+    public @ResponseBody SubjectModel getSubjectByDate(@PathVariable("yyyyMMdd" ) String date) {
 
         Optional<SubjectModel> subject = subjectRepository.findByCreatedAt(date);
 
-        return subject.toString();
+        return subject.get();
 
     }
 

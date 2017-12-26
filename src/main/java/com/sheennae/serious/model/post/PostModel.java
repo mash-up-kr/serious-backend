@@ -1,16 +1,13 @@
 package com.sheennae.serious.model.post;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ForeignKey;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
+import com.sheennae.serious.model.reaction.SubjectPostReactionModel;
 import com.sheennae.serious.model.subject.SubjectModel;
 import com.sheennae.serious.model.user.UserModel;
+
+import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity(name = "Post")
 public class PostModel {
@@ -19,32 +16,22 @@ public class PostModel {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 
-
 	@Column(name = "title", nullable = false)
 	private String title;
-
 
 	@Column(name = "contents", nullable = false)
 	private String contents;
 
-
 	@ManyToOne
-	@JoinColumn(name = "subjectId", foreignKey = @ForeignKey(name = "FK_Post_Subject"))
+	@JoinColumn(name = "subject_id", foreignKey = @ForeignKey(name = "FK_Post_Subject"), nullable = false)
 	private SubjectModel subject;
 
-
 	@ManyToOne
-	@JoinColumn(name = "userId", foreignKey = @ForeignKey(name = "FK_Post_User"))
+	@JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "FK_Post_User"), nullable = false)
 	private UserModel user;
 
-
-	@ManyToOne
-	@JoinColumn(name = "voteId", foreignKey = @ForeignKey(name = "FK_Post_PostVote"))
-	private PostVoteModel vote;
-
-
-	@Column(name = "enableChat")
-	private boolean enableChat;
+	@Column(name = "created_at", nullable = false)
+	private LocalDateTime createdAt;
 
 	public int getId() {
 		return id;
@@ -86,60 +73,48 @@ public class PostModel {
 		this.user = user;
 	}
 
-	public PostVoteModel getVote() {
-		return vote;
+	public LocalDateTime getCreatedAt() {
+		return createdAt;
 	}
 
-	public void setVote(PostVoteModel vote) {
-		this.vote = vote;
-	}
-
-	public boolean isEnableChat() {
-		return enableChat;
-	}
-
-	public void setEnableChat(boolean enableChat) {
-		this.enableChat = enableChat;
+	public void setCreatedAt(LocalDateTime createdAt) {
+		this.createdAt = createdAt;
 	}
 
 	@Override
 	public boolean equals(Object o) {
+
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
-
 		PostModel postModel = (PostModel) o;
+		return id == postModel.id &&
+				Objects.equals(title, postModel.title) &&
+				Objects.equals(contents, postModel.contents) &&
+				Objects.equals(subject, postModel.subject) &&
+				Objects.equals(user, postModel.user) &&
+				Objects.equals(createdAt, postModel.createdAt);
 
-		if (id != postModel.id) return false;
-		if (enableChat != postModel.enableChat) return false;
-		if (title != null ? !title.equals(postModel.title) : postModel.title != null) return false;
-		if (contents != null ? !contents.equals(postModel.contents) : postModel.contents != null) return false;
-		if (subject != null ? !subject.equals(postModel.subject) : postModel.subject != null) return false;
-		if (user != null ? !user.equals(postModel.user) : postModel.user != null) return false;
-		return vote != null ? vote.equals(postModel.vote) : postModel.vote == null;
 	}
 
 	@Override
 	public int hashCode() {
-		int result = id;
-		result = 31 * result + (title != null ? title.hashCode() : 0);
-		result = 31 * result + (contents != null ? contents.hashCode() : 0);
-		result = 31 * result + (subject != null ? subject.hashCode() : 0);
-		result = 31 * result + (user != null ? user.hashCode() : 0);
-		result = 31 * result + (vote != null ? vote.hashCode() : 0);
-		result = 31 * result + (enableChat ? 1 : 0);
-		return result;
+
+		return Objects.hash(id, title, contents, subject, user, createdAt);
+
 	}
 
 	@Override
 	public String toString() {
+
 		return "PostModel{" +
 				"id=" + id +
 				", title='" + title + '\'' +
 				", contents='" + contents + '\'' +
 				", subject=" + subject +
 				", user=" + user +
-				", vote=" + vote +
-				", enableChat=" + enableChat +
+				", createdAt=" + createdAt +
 				'}';
+
 	}
+
 }
