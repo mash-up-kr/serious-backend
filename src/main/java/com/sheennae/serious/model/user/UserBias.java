@@ -1,6 +1,6 @@
 package com.sheennae.serious.model.user;
 
-public enum BiasType {
+public enum UserBias {
 
 	EXTREME_LEFT, LEFT, MID, RIGHT, EXTREME_RIGHT
 

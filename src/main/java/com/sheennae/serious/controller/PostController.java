@@ -4,7 +4,6 @@ import com.sheennae.serious.dao.*;
 import com.sheennae.serious.model.post.PostModel;
 import com.sheennae.serious.model.post.command.PostCommand;
 import com.sheennae.serious.model.reaction.SubjectPostReactionModel;
-import com.sheennae.serious.model.reaction.SubjectReactionModel;
 import com.sheennae.serious.model.subject.SubjectModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -63,7 +62,8 @@ public class PostController {
         subjectPostReaction.setPost(post);
         subjectPostReaction.setReactedTime(LocalDateTime.now());
         subjectPostReaction.setSubject(subjectModel);
-        subjectPostReaction.setSubjectReaction(subjectReactionRepository.findByReactionType(command.getType()).get());
+        System.out.println("getType : " + command.getReaction());
+        subjectPostReaction.setSubjectReaction(subjectReactionRepository.findByReaction(command.getReaction()).get());
         subjectPostReactionRepository.save(subjectPostReaction);
 
         return post;

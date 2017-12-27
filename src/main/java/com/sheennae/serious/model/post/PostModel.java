@@ -33,6 +33,11 @@ public class PostModel {
 	@Column(name = "created_at", nullable = false)
 	private LocalDateTime createdAt;
 
+	@PrePersist
+	public void persist() {
+		this.createdAt = LocalDateTime.now();
+	}
+
 	public int getId() {
 		return id;
 	}

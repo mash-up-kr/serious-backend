@@ -1,6 +1,6 @@
 package com.sheennae.serious.dao;
 
-import com.sheennae.serious.model.reaction.ReactionType;
+import com.sheennae.serious.model.reaction.Reaction;
 import com.sheennae.serious.model.reaction.SubjectReactionModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -12,6 +12,6 @@ public interface SubjectReactionRepository extends JpaRepository<SubjectReaction
 
 //    @Query(value = "select * from subject_reaction where reaction_type = :type", nativeQuery = true)
 //    Optional<SubjectReactionModel> findByReactionType(@Param("type") String type);
-    Optional<SubjectReactionModel> findByReactionType(ReactionType type);
+    Optional<SubjectReactionModel> findByReaction(Reaction reaction);
 
 }

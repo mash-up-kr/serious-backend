@@ -1,6 +1,6 @@
 package com.sheennae.serious.model.reaction;
 
-public enum ReactionType {
+public enum Reaction {
 
     AGREE, DISAGREE, NEUTRAL
 

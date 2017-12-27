@@ -26,18 +26,7 @@ public class SubjectModel {
 	private LocalDateTime publishedAt;
 
 
-	@PrePersist
-	public void persist() {
-		this.createdAt = LocalDateTime.now();
-	}
 
-	public LocalDateTime getPublishedAt() {
-		return publishedAt;
-	}
-
-	public void setPublishedAt(LocalDateTime publishedAt) {
-		this.publishedAt = publishedAt;
-	}
 
 	public int getId() {
 		return id;
@@ -66,6 +55,19 @@ public class SubjectModel {
 
 	public void setcreatedAt(LocalDateTime createdAt) {
 		this.createdAt = createdAt;
+	}
+
+	@PrePersist
+	public void persist() {
+		this.createdAt = LocalDateTime.now();
+	}
+
+	public LocalDateTime getPublishedAt() {
+		return publishedAt;
+	}
+
+	public void setPublishedAt(LocalDateTime publishedAt) {
+		this.publishedAt = publishedAt;
 	}
 
 

@@ -2,11 +2,12 @@ package com.sheennae.serious.model.user;
 
 
 
+import io.swagger.annotations.ApiModelProperty;
+
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "user")
@@ -14,39 +15,47 @@ public class UserModel {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
+	@ApiModelProperty(notes = "The database generated product ID")
 	private int id;
 
 	@Column(name = "uuid", unique = true, nullable = false)
+	@ApiModelProperty(notes = "The device unique value", required = true)
 	private String uuid;
 
 
 	@Column(name = "nickname", unique = true, nullable = false)
+	@ApiModelProperty(notes = "The user nickname for showing other users", required = true)
 	private String nickname;
 
 
-	@Column(name = "create_at", insertable=true, updatable=false, nullable=false)
-	private LocalDateTime createAt;
+	@Column(name = "created_at", insertable = true, updatable = false, nullable = false)
+	@ApiModelProperty(notes = "The time when user register on Serious application")
+	private LocalDateTime createdAt;
 
 	@ManyToOne
-	@JoinColumn(name = "bias_id", foreignKey = @ForeignKey(name = "FK_User_Bias"), nullable = false)
-	private BiasModel bias;
+	@JoinColumn(name = "user_bias_id", foreignKey = @ForeignKey(name = "FK_User_UserBias"), nullable = false)
+	@ApiModelProperty(notes = "The user's opinion about politics = ['EXTREME_LEFT', 'LEFT', 'MID', 'RIGHT', 'EXTREME_RIGHT']", required = true)
+	private UserBiasModel bias;
 
 
 	@Column(name = "introduce")
+	@ApiModelProperty(notes = "The user's introduction about themselves")
 	private String introduce;
 
 
-	@Column(name = "age_range")
+	@Column(name = "age_range", nullable = false)
+	@ApiModelProperty(notes = "The user's age range 10 to 90", required = true)
 	private int ageRange;
 
 
 	@Column(name = "gender")
+	@ApiModelProperty(notes = "The user's sex", required = true)
 	private Gender gender;
 
 
 	@PrePersist
 	public void persist() {
-		this.createAt = LocalDateTime.now();
+		this.createdAt = LocalDateTime.now();
 	}
 
 
@@ -74,19 +83,19 @@ public class UserModel {
 		this.nickname = nickname;
 	}
 
-	public LocalDateTime getCreateAt() {
-		return createAt;
+	public LocalDateTime getCreatedAt() {
+		return createdAt;
 	}
 
-	public void setCreateAt(LocalDateTime createAt) {
-		this.createAt = createAt;
+	public void setCreatedAt(LocalDateTime createdAt) {
+		this.createdAt = createdAt;
 	}
 
-	public BiasModel getBias() {
+	public UserBiasModel getBias() {
 		return bias;
 	}
 
-	public void setBias(BiasModel bias) {
+	public void setBias(UserBiasModel bias) {
 		this.bias = bias;
 	}
 
@@ -123,7 +132,7 @@ public class UserModel {
 				ageRange == userModel.ageRange &&
 				Objects.equals(uuid, userModel.uuid) &&
 				Objects.equals(nickname, userModel.nickname) &&
-				Objects.equals(createAt, userModel.createAt) &&
+				Objects.equals(createdAt, userModel.createdAt) &&
 				Objects.equals(bias, userModel.bias) &&
 				Objects.equals(introduce, userModel.introduce) &&
 				gender == userModel.gender;
@@ -132,7 +141,7 @@ public class UserModel {
 	@Override
 	public int hashCode() {
 
-		return Objects.hash(id, uuid, nickname, createAt, bias, introduce, ageRange, gender);
+		return Objects.hash(id, uuid, nickname, createdAt, bias, introduce, ageRange, gender);
 	}
 
 	@Override
@@ -141,8 +150,8 @@ public class UserModel {
 				"id=" + id +
 				", uuid='" + uuid + '\'' +
 				", nickname='" + nickname + '\'' +
-				", createAt=" + createAt +
-				", bias=" + bias +
+				", createdAt=" + createdAt +
+				", userBias=" + bias +
 				", introduce='" + introduce + '\'' +
 				", ageRange=" + ageRange +
 				", gender=" + gender +

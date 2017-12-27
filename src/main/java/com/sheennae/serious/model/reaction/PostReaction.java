@@ -12,8 +12,8 @@ public class PostReaction {
     private int id;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "reaction_type", nullable = false)
-    private ReactionType reactionType;
+    @Column(name = "reaction", nullable = false)
+    private Reaction reaction;
 
     public int getId() {
         return id;
@@ -23,12 +23,12 @@ public class PostReaction {
         this.id = id;
     }
 
-    public ReactionType getReactionType() {
-        return reactionType;
+    public Reaction getReaction() {
+        return reaction;
     }
 
-    public void setReactionType(ReactionType reactionType) {
-        this.reactionType = reactionType;
+    public void setReaction(Reaction reaction) {
+        this.reaction = reaction;
     }
 
     @Override
@@ -38,14 +38,14 @@ public class PostReaction {
         if (o == null || getClass() != o.getClass()) return false;
         PostReaction that = (PostReaction) o;
         return id == that.id &&
-                reactionType == that.reactionType;
+                reaction == that.reaction;
 
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, reactionType);
+        return Objects.hash(id, reaction);
 
     }
 
@@ -54,7 +54,7 @@ public class PostReaction {
 
         return "PostReaction{" +
                 "id=" + id +
-                ", reactionType=" + reactionType +
+                ", reaction=" + reaction +
                 '}';
 
     }

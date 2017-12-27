@@ -3,6 +3,7 @@ package com.sheennae.serious.controller;
 import com.sheennae.serious.dao.SubjectRepository;
 import com.sheennae.serious.model.BaseListModel;
 import com.sheennae.serious.model.subject.SubjectModel;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,6 +17,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/subject")
+@Api(value = "subjectRESTApi", description = "offer day's subject")
 public class SubjectController {
 
     private final SubjectRepository subjectRepository;
@@ -29,13 +31,14 @@ public class SubjectController {
     public @ResponseBody SubjectModel getSubjectByDate(@PathVariable("yyyyMMdd" ) String date) {
 
         Optional<SubjectModel> subject = subjectRepository.findByCreatedAt(date);
-
-        return subject.get();
+        SubjectModel test = subject.get();
+        test.setPublishedAt(LocalDateTime.now());
+        return test;
 
     }
 
 
-    @RequestMapping("")
+    @RequestMapping(value = "", method = RequestMethod.GET)
     public @ResponseBody BaseListModel<SubjectModel> getSubjects(
             @RequestParam(name = "cursor", required = false, defaultValue = "0") String cursor) {
 

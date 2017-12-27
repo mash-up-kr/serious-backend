@@ -6,8 +6,8 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table(name = "bias")
-public class BiasModel {
+@Table(name = "user_bias")
+public class UserBiasModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -15,8 +15,8 @@ public class BiasModel {
     private int id;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "type", nullable = false)
-    private BiasType type;
+    @Column(name = "bias", nullable = false)
+    private UserBias bias;
 
     public int getId() {
         return id;
@@ -26,34 +26,34 @@ public class BiasModel {
         this.id = id;
     }
 
-    public BiasType getType() {
-        return type;
+    public UserBias getBias() {
+        return bias;
     }
 
-    public void setType(BiasType type) {
-        this.type = type;
+    public void setBias(UserBias bias) {
+        this.bias = bias;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        BiasModel biasModel = (BiasModel) o;
-        return id == biasModel.id &&
-                type == biasModel.type;
+        UserBiasModel userBiasModel = (UserBiasModel) o;
+        return id == userBiasModel.id &&
+                bias == userBiasModel.bias;
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, type);
+        return Objects.hash(id, bias);
     }
 
     @Override
     public String toString() {
-        return "BiasModel{" +
+        return "UserBiasModel{" +
                 "id=" + id +
-                ", type=" + type +
+                ", bias=" + bias +
                 '}';
     }
 

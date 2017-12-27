@@ -1,13 +1,13 @@
 package com.sheennae.serious.model.user.command;
 
-import com.sheennae.serious.model.user.BiasType;
+import com.sheennae.serious.model.user.UserBias;
 import com.sheennae.serious.model.user.Gender;
 
 public class UserJoinCommand {
 
     private String uuid;
     private String nickname;
-    private BiasType biasType;
+    private UserBias bias;
     private String introduce;
     private int ageRange;
     private Gender gender;
@@ -21,8 +21,8 @@ public class UserJoinCommand {
         return nickname;
     }
 
-    public BiasType getBiasType() {
-        return biasType;
+    public UserBias getBias() {
+        return bias;
     }
 
     public String getIntroduce() {
@@ -42,7 +42,7 @@ public class UserJoinCommand {
         return "UserJoinCommand{" +
                 "uuid='" + uuid + '\'' +
                 ", nickname='" + nickname + '\'' +
-                ", biasType=" + biasType +
+                ", bias=" + bias +
                 ", introduce='" + introduce + '\'' +
                 ", ageRange=" + ageRange +
                 ", gender=" + gender +

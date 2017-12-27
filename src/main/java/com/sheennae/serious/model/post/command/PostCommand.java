@@ -1,7 +1,7 @@
 package com.sheennae.serious.model.post.command;
 
 
-import com.sheennae.serious.model.reaction.ReactionType;
+import com.sheennae.serious.model.reaction.Reaction;
 
 import java.util.Objects;
 
@@ -9,7 +9,7 @@ public class PostCommand {
 
     private String title;
     private String contents;
-    private ReactionType type;
+    private Reaction reaction;
 
     public String getTitle() {
         return title;
@@ -27,12 +27,12 @@ public class PostCommand {
         this.contents = contents;
     }
 
-    public ReactionType getType() {
-        return type;
+    public Reaction getReaction() {
+        return reaction;
     }
 
-    public void setType(ReactionType type) {
-        this.type = type;
+    public void setReaction(Reaction reaction) {
+        this.reaction = reaction;
     }
 
     @Override
@@ -43,14 +43,14 @@ public class PostCommand {
         PostCommand that = (PostCommand) o;
         return Objects.equals(title, that.title) &&
                 Objects.equals(contents, that.contents) &&
-                type == that.type;
+                reaction == that.reaction;
 
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(title, contents, type);
+        return Objects.hash(title, contents, reaction);
 
     }
 
@@ -60,7 +60,7 @@ public class PostCommand {
         return "PostCommand{" +
                 "title='" + title + '\'' +
                 ", contents='" + contents + '\'' +
-                ", type=" + type +
+                ", reaction=" + reaction +
                 '}';
 
     }
