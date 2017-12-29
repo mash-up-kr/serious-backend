@@ -9,6 +9,7 @@ public class PostCommand {
 
     private String title;
     private String contents;
+    private String subjectId;
     private Reaction reaction;
 
     public String getTitle() {
@@ -35,6 +36,14 @@ public class PostCommand {
         this.reaction = reaction;
     }
 
+    public String getSubjectId() {
+        return subjectId;
+    }
+
+    public void setSubjectId(String subjectId) {
+        this.subjectId = subjectId;
+    }
+
     @Override
     public boolean equals(Object o) {
 
@@ -43,6 +52,7 @@ public class PostCommand {
         PostCommand that = (PostCommand) o;
         return Objects.equals(title, that.title) &&
                 Objects.equals(contents, that.contents) &&
+                Objects.equals(subjectId, that.subjectId) &&
                 reaction == that.reaction;
 
     }
@@ -50,7 +60,7 @@ public class PostCommand {
     @Override
     public int hashCode() {
 
-        return Objects.hash(title, contents, reaction);
+        return Objects.hash(title, contents, subjectId, reaction);
 
     }
 
@@ -60,9 +70,9 @@ public class PostCommand {
         return "PostCommand{" +
                 "title='" + title + '\'' +
                 ", contents='" + contents + '\'' +
+                ", subjectId='" + subjectId + '\'' +
                 ", reaction=" + reaction +
                 '}';
 
     }
-
 }

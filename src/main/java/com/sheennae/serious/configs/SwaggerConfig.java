@@ -26,7 +26,8 @@ public class SwaggerConfig extends WebMvcConfigurerAdapter {
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.sheennae.serious.controller"))
                 .paths(PathSelectors.any())
-                .build();
+                .build()
+                .apiInfo(metaData());
     }
 
     private ApiInfo metaData() {
@@ -36,7 +37,7 @@ public class SwaggerConfig extends WebMvcConfigurerAdapter {
                 "Spring Boot REST API for serious project",
                 "1.0",
                 "Terms of service",
-                new Contact("coding squid", "https://effectivesquid.tistory.com", "gksxodnd007@gmail.com"),
+                new Contact("codingSquid", "https://effectivesquid.tistory.com", "gksxodnd007@gmail.com"),
                 "Apache License Version 2.0",
                 "https://www.apache.org/licenses/LICENSE-2.0",
                 new ArrayList<>());

@@ -54,13 +54,12 @@ public class PostController {
             @ApiResponse(code = 409, message = "DUPLICATED : if user write post more than one once a day"),
             @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR")
     })
-    @RequestMapping(value = "/{subjectId}", method = RequestMethod.POST, produces = "application/json")
+    @RequestMapping(value = "", method = RequestMethod.POST, produces = "application/json")
     public @ResponseBody JsonObject create(@RequestHeader(value = "userId") String userId,
-                                           @PathVariable String subjectId,
                                            @RequestBody PostCommand command,
                                            HttpServletResponse response) {
 
-        System.out.println(subjectId);
+        System.out.println(command.getSubjectId());
 
         PostModel post = new PostModel();
         SubjectPostReactionModel subjectPostReaction = new SubjectPostReactionModel();
@@ -68,7 +67,7 @@ public class PostController {
         post.setTitle(command.getTitle());
         post.setContents(command.getContents());
 
-        SubjectModel subjectModel = subjectRepository.findOne(Integer.parseInt(subjectId));
+        SubjectModel subjectModel = subjectRepository.findOne(Integer.parseInt(command.getSubjectId()));
 
         if (subjectModel != null) {
             post.setSubject(subjectModel);
