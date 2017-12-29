@@ -5,6 +5,7 @@ import javax.persistence.*;
 import com.sheennae.serious.model.reaction.SubjectPostReactionModel;
 import com.sheennae.serious.model.subject.SubjectModel;
 import com.sheennae.serious.model.user.UserModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -14,23 +15,29 @@ public class PostModel {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	@ApiModelProperty(notes = "The database generated product ID")
 	private int id;
 
 	@Column(name = "title", nullable = false)
+	@ApiModelProperty(notes = "The post title", required = true)
 	private String title;
 
 	@Column(name = "contents", nullable = false)
+	@ApiModelProperty(notes = "The post contents", required = true)
 	private String contents;
 
 	@ManyToOne
 	@JoinColumn(name = "subject_id", foreignKey = @ForeignKey(name = "FK_Post_Subject"), nullable = false)
+	@ApiModelProperty(notes = "The post is corresponded by subject", required = true)
 	private SubjectModel subject;
 
 	@ManyToOne
 	@JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "FK_Post_User"), nullable = false)
-	private UserModel user;
+	@ApiModelProperty(notes = "The post was written by user", required = true)
+	private UserModel author;
 
 	@Column(name = "created_at", nullable = false)
+	@ApiModelProperty(notes = "The post created time", required = true)
 	private LocalDateTime createdAt;
 
 	@PrePersist
@@ -70,12 +77,12 @@ public class PostModel {
 		this.subject = subject;
 	}
 
-	public UserModel getUser() {
-		return user;
+	public UserModel getAuthor() {
+		return author;
 	}
 
-	public void setUser(UserModel user) {
-		this.user = user;
+	public void setAuthor(UserModel author) {
+		this.author = author;
 	}
 
 	public LocalDateTime getCreatedAt() {
@@ -96,7 +103,7 @@ public class PostModel {
 				Objects.equals(title, postModel.title) &&
 				Objects.equals(contents, postModel.contents) &&
 				Objects.equals(subject, postModel.subject) &&
-				Objects.equals(user, postModel.user) &&
+				Objects.equals(author, postModel.author) &&
 				Objects.equals(createdAt, postModel.createdAt);
 
 	}
@@ -104,7 +111,7 @@ public class PostModel {
 	@Override
 	public int hashCode() {
 
-		return Objects.hash(id, title, contents, subject, user, createdAt);
+		return Objects.hash(id, title, contents, subject, author, createdAt);
 
 	}
 
@@ -116,7 +123,7 @@ public class PostModel {
 				", title='" + title + '\'' +
 				", contents='" + contents + '\'' +
 				", subject=" + subject +
-				", user=" + user +
+				", author=" + author +
 				", createdAt=" + createdAt +
 				'}';
 

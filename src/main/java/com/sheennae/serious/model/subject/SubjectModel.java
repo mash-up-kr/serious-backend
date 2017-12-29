@@ -1,5 +1,7 @@
 package com.sheennae.serious.model.subject;
 
+import io.swagger.annotations.ApiModelProperty;
+
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -11,18 +13,22 @@ public class SubjectModel {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	@ApiModelProperty(notes = "The database generated product ID")
 	private int id;
 
 
 	@Column(name = "title", nullable = false)
+	@ApiModelProperty(notes = "The subject title", required = true)
 	private String title;
 
 
 	@Column(name = "created_at", insertable = true, updatable = false, nullable = false)
+	@ApiModelProperty(notes = "The subject created time", required = true)
 	private LocalDateTime createdAt;
 
 
 	@Column(name="published_at", insertable = true, updatable = false, nullable = true)
+	@ApiModelProperty(notes = "The subject published time", required = true)
 	private LocalDateTime publishedAt;
 
 

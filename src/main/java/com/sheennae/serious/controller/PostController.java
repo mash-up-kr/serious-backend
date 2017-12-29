@@ -1,18 +1,28 @@
 package com.sheennae.serious.controller;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.sheennae.serious.dao.*;
 import com.sheennae.serious.model.post.PostModel;
 import com.sheennae.serious.model.post.command.PostCommand;
+import com.sheennae.serious.model.reaction.Reaction;
 import com.sheennae.serious.model.reaction.SubjectPostReactionModel;
 import com.sheennae.serious.model.subject.SubjectModel;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDateTime;
 
 
 @RestController
 @RequestMapping("/post")
+@Api(value = "PostController", description = "Operations pertaining to post in Serious application")
 public class PostController {
 
     private final UserRepository userRepository;
@@ -36,14 +46,24 @@ public class PostController {
 
     }
 
-    @PostMapping("/{subjectId}")
-    public @ResponseBody PostModel create(@RequestHeader(value = "userId") String userId,
-                                          @PathVariable String subjectId,
-                                          @RequestBody PostCommand command) {
+    @ApiOperation(value = "The post is written by user", response = JsonObject.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "SUCCESS"),
+            @ApiResponse(code = 400, message = "BAD_REQUEST : none Essential paramter or doesn't suitable parameter"),
+            @ApiResponse(code = 401, message = "UNAUTHORIZED : doesn't exist or wrong format uuid in header"),
+            @ApiResponse(code = 409, message = "DUPLICATED : if user write post more than one once a day"),
+            @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR")
+    })
+    @RequestMapping(value = "/{subjectId}", method = RequestMethod.POST, produces = "application/json")
+    public @ResponseBody JsonObject create(@RequestHeader(value = "userId") String userId,
+                                           @PathVariable String subjectId,
+                                           @RequestBody PostCommand command,
+                                           HttpServletResponse response) {
 
         System.out.println(subjectId);
 
         PostModel post = new PostModel();
+        SubjectPostReactionModel subjectPostReaction = new SubjectPostReactionModel();
 
         post.setTitle(command.getTitle());
         post.setContents(command.getContents());
@@ -54,19 +74,138 @@ public class PostController {
             post.setSubject(subjectModel);
         }
 
-        post.setUser(userRepository.findOne(Integer.parseInt(userId)));
+        post.setAuthor(userRepository.findOne(Integer.parseInt(userId)));
         post = postRepository.save(post);
 
-        SubjectPostReactionModel subjectPostReaction = new SubjectPostReactionModel();
+        /*
+         * subjectPostReactionModel is also created with post
+         */
 
         subjectPostReaction.setPost(post);
         subjectPostReaction.setReactedTime(LocalDateTime.now());
         subjectPostReaction.setSubject(subjectModel);
-        System.out.println("getType : " + command.getReaction());
+
+        System.out.println("getReaction : " + command.getReaction());
+
         subjectPostReaction.setSubjectReaction(subjectReactionRepository.findByReaction(command.getReaction()).get());
         subjectPostReactionRepository.save(subjectPostReaction);
 
-        return post;
+        /*
+         * insert field for return json
+         */
+
+        JsonElement element = new Gson().toJsonTree(post);
+        JsonObject jsonObject = element.getAsJsonObject();
+
+        jsonObject.addProperty("subjectReaction", subjectPostReaction.getSubjectReaction().getReaction().toString());
+        jsonObject.addProperty("agreeCount", "30");
+        jsonObject.addProperty("neutralCount", "30");
+        jsonObject.addProperty("disagreeCount", "30");
+        jsonObject.addProperty("myReaction", Reaction.AGREE.toString());
+
+        return jsonObject;
+    }
+
+    @ApiOperation(value = "React about the post : [AGREE]")
+    @ApiResponses(value = {
+            @ApiResponse(code = 204, message = "SUCCESS"),
+            @ApiResponse(code = 401, message = "UNAUTHORIZED : doesn't exist or wrong format uuid in header"),
+            @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR")
+    })
+    @RequestMapping(value = "/{postId}/agree", method = RequestMethod.POST)
+    public void reactAgree(@PathVariable String postId,
+                           @RequestHeader String uuid ,
+                           HttpServletResponse response) {
+
+        //todo
+
+        response.setStatus(204);
+
+    }
+
+    @ApiOperation(value = "Cancel the reaction about the post : [AGREE]")
+    @ApiResponses(value = {
+            @ApiResponse(code = 204, message = "SUCCESS"),
+            @ApiResponse(code = 401, message = "UNAUTHORIZED : doesn't exist or wrong format uuid in header"),
+            @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR")
+    })
+    @RequestMapping(value = "{postId}/agree", method = RequestMethod.DELETE)
+    public void reactAgreeCancel(@PathVariable String postId,
+                                 @RequestHeader String uuid ,
+                                 HttpServletResponse response) {
+
+        //todo
+
+        response.setStatus(204);
+
+    }
+
+    @ApiOperation(value = "React about the post : [NEUTRAL]")
+    @ApiResponses(value = {
+            @ApiResponse(code = 204, message = "SUCCESS"),
+            @ApiResponse(code = 401, message = "UNAUTHORIZED : doesn't exist or wrong format uuid in header"),
+            @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR")
+    })
+    @RequestMapping(value = "/{postId}/neutral", method = RequestMethod.POST)
+    public void reactNeutral(@PathVariable String postId,
+                             @RequestHeader String uuid ,
+                             HttpServletResponse response) {
+
+        //todo
+
+        response.setStatus(204);
+
+    }
+
+    @ApiOperation(value = "Cancel the reaction about the post : [NEUTRAL]")
+    @ApiResponses(value = {
+            @ApiResponse(code = 204, message = "SUCCESS"),
+            @ApiResponse(code = 401, message = "UNAUTHORIZED : doesn't exist or wrong format uuid in header"),
+            @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR")
+    })
+    @RequestMapping(value = "{postId}/neutral", method = RequestMethod.DELETE)
+    public void reactNeutralCancel(@PathVariable String postId,
+                                   @RequestHeader String uuid ,
+                                   HttpServletResponse response) {
+
+        //todo
+
+        response.setStatus(204);
+
+    }
+
+    @ApiOperation(value = "React about the post : [DISAGREE]")
+    @ApiResponses(value = {
+            @ApiResponse(code = 204, message = "SUCCESS"),
+            @ApiResponse(code = 401, message = "UNAUTHORIZED : doesn't exist or wrong format uuid in header"),
+            @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR")
+    })
+    @RequestMapping(value = "/{postId}/disagree", method = RequestMethod.POST)
+    public void reactDisagree(@PathVariable String postId,
+                              @RequestHeader String uuid ,
+                              HttpServletResponse response) {
+
+        //todo
+
+        response.setStatus(204);
+
+    }
+
+    @ApiOperation(value = "Cancel the reaction about the post : [DISAGREE]")
+    @ApiResponses(value = {
+            @ApiResponse(code = 204, message = "SUCCESS"),
+            @ApiResponse(code = 401, message = "UNAUTHORIZED : doesn't exist or wrong format uuid in header"),
+            @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR")
+    })
+    @RequestMapping(value = "{postId}/disagree", method = RequestMethod.DELETE)
+    public void reactDisagreeCancel(@PathVariable String postId,
+                                    @RequestHeader String uuid,
+                                    HttpServletResponse response) {
+
+        //todo
+
+        response.setStatus(204);
+
     }
 
 }

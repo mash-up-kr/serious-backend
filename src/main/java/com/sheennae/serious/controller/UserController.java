@@ -7,6 +7,9 @@ import com.sheennae.serious.model.user.command.UserJoinCommand;
 import com.sheennae.serious.dao.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
@@ -15,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping(value = "/user")
-@Api(value = "userController", description = "Operations pertaining to user in Serious application")
+@Api(value = "UserController", description = "Operations pertaining to user in Serious application")
 public class UserController {
 
     private final UserRepository userRepository;
@@ -28,8 +31,13 @@ public class UserController {
     }
 
     @ApiOperation(value = "Register a user for using serious application", response = UserModel.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "SUCCESS"),
+            @ApiResponse(code = 400, message = "BAD_REQUEST"),
+            @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR")
+    })
     @RequestMapping(value = "/register", method = RequestMethod.POST, produces = "application/json")
-    public @ResponseBody UserModel join(@RequestBody UserJoinCommand command, HttpServletResponse response) {
+    public @ResponseBody UserModel register(@RequestBody UserJoinCommand command, HttpServletResponse response) {
         // TODO 1. command validate
         // TODO 2.     invalid data -> error
         // TODO 3.     valid data -> select -> insert
@@ -55,6 +63,22 @@ public class UserController {
 
             return userRepository.save(userModel);
         }
+
+    }
+
+    @ApiOperation(value = "Watch the other user infomation", response = UserModel.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "SUCCESS"),
+            @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR")
+    })
+    @RequestMapping(value = "/{userId}", method = RequestMethod.GET, produces = "application/json")
+    public @ResponseBody UserModel getUserInfo(@PathVariable String userId, HttpServletResponse response) {
+
+        UserModel user = userRepository.findOne(Integer.parseInt(userId));
+        user.setCreatedAt(null);
+        user.setUuid(null);
+
+        return user;
 
     }
 
