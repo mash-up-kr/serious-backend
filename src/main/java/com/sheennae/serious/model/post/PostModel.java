@@ -40,6 +40,8 @@ public class PostModel {
 	@ApiModelProperty(notes = "The post created time", required = true)
 	private LocalDateTime createdAt;
 
+
+
 	@PrePersist
 	public void persist() {
 		this.createdAt = LocalDateTime.now();
