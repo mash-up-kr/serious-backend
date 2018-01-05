@@ -6,7 +6,7 @@
     <groupId>com.sheennae</groupId>
     <artifactId>serious</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <packaging>jar</packaging>
+    <packaging>war</packaging>
 
     <name>serious-backend</name>
     <description>discuss about politics</description>
@@ -72,7 +72,7 @@
 
     <build>
         <defaultGoal>install</defaultGoal>
-        <finalName>serious-executable-jar</finalName>
+        <finalName>serious-executable-war</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

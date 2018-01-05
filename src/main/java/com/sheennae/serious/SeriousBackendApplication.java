@@ -15,7 +15,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @SpringBootApplication(scanBasePackages = "com.sheennae.serious")
 @EntityScan(
 		basePackageClasses = { Jsr310JpaConverters.class }, basePackages = {"com.sheennae.serious.model"})
-public class SeriousBackendApplication {
+public class SeriousBackendApplication extends ServletInitializer {
 
 	public static void main(String[] args) {
 		SpringApplication.run(SeriousBackendApplication.class, args);
