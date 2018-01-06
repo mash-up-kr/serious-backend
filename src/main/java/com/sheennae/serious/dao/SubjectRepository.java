@@ -22,4 +22,8 @@ public interface SubjectRepository extends JpaRepository<SubjectModel, Integer> 
     @Query(value = "select * from subject where date(subject.created_at) = :date", nativeQuery = true)
     Optional<SubjectModel> findByCreatedAt(@Param("date") String date);
 
+
+    @Query(value = "select * from subject where date(subject.published_at) = CAST(CURRENT_TIMESTAMP AS DATE) limit 1", nativeQuery = true)
+    Optional<SubjectModel> findToday();
+
 }

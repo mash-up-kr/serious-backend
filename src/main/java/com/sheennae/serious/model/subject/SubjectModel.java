@@ -32,8 +32,6 @@ public class SubjectModel {
 	private LocalDateTime publishedAt;
 
 
-
-
 	public int getId() {
 		return id;
 	}
@@ -59,7 +57,7 @@ public class SubjectModel {
 	}
 
 
-	public void setcreatedAt(LocalDateTime createdAt) {
+	public void setCreatedAt(LocalDateTime createdAt) {
 		this.createdAt = createdAt;
 	}
 
