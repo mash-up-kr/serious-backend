@@ -27,7 +27,8 @@ public class SwaggerConfig extends WebMvcConfigurerAdapter {
                 .apis(RequestHandlerSelectors.basePackage("com.sheennae.serious.controller"))
                 .paths(PathSelectors.any())
                 .build()
-                .apiInfo(metaData());
+                .apiInfo(metaData())
+                .useDefaultResponseMessages(false);
     }
 
     private ApiInfo metaData() {
@@ -44,5 +45,4 @@ public class SwaggerConfig extends WebMvcConfigurerAdapter {
 
         return apiInfo;
     }
-
 }
