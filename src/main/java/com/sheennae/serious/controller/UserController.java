@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping(value = "/user")
-@Api(value = "UserController", description = "Operations pertaining to user in Serious application")
+@Api(value = "UserController", description = "User Controller")
 public class UserController {
 
     private final UserRepository userRepository;
