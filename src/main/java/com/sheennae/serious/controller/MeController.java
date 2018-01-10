@@ -8,11 +8,13 @@ import com.sheennae.serious.exception.UnauthorizedException;
 import com.sheennae.serious.model.ErrorModel;
 import com.sheennae.serious.model.user.UserModel;
 import com.sheennae.serious.model.user.command.UserEditCommand;
+import com.sheennae.serious.model.user.command.UserPushTokenCommand;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -85,17 +87,20 @@ public class MeController {
 
     @ApiOperation(value = "Register push token")
     @ApiResponses(value = {
-            @ApiResponse(code = 204, message = "SUCCESS : empty body"),
-            @ApiResponse(code = 400, message = "BAD_REQUEST : doesn't compatible parameter"),
-            @ApiResponse(code = 401, message = "UNAUTHORIZED : doesn't exist or wrong format uuid in header"),
+            @ApiResponse(code = 204, message = "SUCCESS"),
+            @ApiResponse(code = 400, message = "BAD_REQUEST", response = ErrorModel.class),
+            @ApiResponse(code = 401, message = "UNAUTHORIZED", response = ErrorModel.class),
             @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR")
     })
-    @RequestMapping(value = "/device", method = RequestMethod.PUT, produces = "application/json")
-    public @ResponseBody void registerPushToken(@RequestHeader String uuid, @RequestBody String pushToken, HttpServletResponse response) {
-
-        //todo
-
-        JsonObject jsonObject = new JsonObject();
+    @RequestMapping(value = "/device", method = RequestMethod.POST, produces = "application/json")
+    public @ResponseBody void registerPushToken(@RequestHeader String uuid, @RequestBody UserPushTokenCommand command, HttpServletResponse response) {
+        if (command == null || command.getPushToken() == null || command.getPushToken().trim().length() == 0) {
+            throw new BadRequestException("Body should not be null for save my push token.");
+        }
+        UserModel me = getMeInfo(uuid);
+        String pushToken = command.getPushToken();
+        // TODO save push token
+        response.setStatus(HttpStatus.NO_CONTENT.value());
     }
 
 
