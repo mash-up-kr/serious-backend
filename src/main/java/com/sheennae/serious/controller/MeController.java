@@ -2,10 +2,12 @@ package com.sheennae.serious.controller;
 
 import com.google.gson.*;
 import com.sheennae.serious.dao.UserRepository;
+import com.sheennae.serious.exception.BadRequestException;
 import com.sheennae.serious.exception.NotFoundException;
 import com.sheennae.serious.exception.UnauthorizedException;
 import com.sheennae.serious.model.ErrorModel;
 import com.sheennae.serious.model.user.UserModel;
+import com.sheennae.serious.model.user.command.UserEditCommand;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -41,25 +43,43 @@ public class MeController {
             throw new UnauthorizedException();
         }
 
-        Optional<UserModel> optionalMe = userRepository.findByUuid(uuid);
-        UserModel me = optionalMe.orElseThrow(() -> new NotFoundException("Doesn't find user by uuid. Please register first."));
-
-        return me;
+        return userRepository
+                .findByUuid(uuid)
+                .orElseThrow(() -> new NotFoundException("Doesn't find user by uuid. Please register first."));
 
     }
 
-    @ApiOperation(value = "Edit my information", response = JsonObject.class)
+    @ApiOperation(value = "Edit my information")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "SUCCESS"),
-            @ApiResponse(code = 401, message = "UNAUTHORIZED : doesn't exist or wrong format uuid in header"),
+            @ApiResponse(code = 401, message = "UNAUTHORIZED", response = ErrorModel.class),
             @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR")
     })
     @RequestMapping(method = RequestMethod.PUT, produces = "application/json")
-    public @ResponseBody UserModel editMeInfo(@RequestHeader String uuid) {
+    public @ResponseBody UserModel editMeInfo(@RequestHeader(defaultValue = "") String uuid, @RequestBody UserEditCommand command) {
+        UserModel me = getMeInfo(uuid);
+        if (command == null) {
+            throw new BadRequestException("Body should not be null for editing my information.");
+        }
 
-        //todo
+        if (command.getAgeRange() != null) {
+            me.setAgeRange(command.getAgeRange());
+        }
 
-        return null;
+        if (command.getGender() != null) {
+            me.setGender(command.getGender());
+        }
+
+        if (command.getBias() != null) {
+//            me.setBias(command.getBias());
+        }
+
+        if (command.getIntroduce() != null) {
+            me.setIntroduce(command.getIntroduce());
+        }
+
+        userRepository.save(me);
+        return me;
 
     }
 
@@ -71,13 +91,11 @@ public class MeController {
             @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR")
     })
     @RequestMapping(value = "/device", method = RequestMethod.PUT, produces = "application/json")
-    public @ResponseBody JsonObject registerPushToken(@RequestHeader String uuid, @RequestBody String pushToken) {
+    public @ResponseBody void registerPushToken(@RequestHeader String uuid, @RequestBody String pushToken, HttpServletResponse response) {
 
         //todo
 
         JsonObject jsonObject = new JsonObject();
-
-        return jsonObject;
     }
 
 
