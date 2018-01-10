@@ -49,6 +49,7 @@ public class UserModel {
 
 
 	@Column(name = "gender")
+	@Enumerated(EnumType.STRING)
 	@ApiModelProperty(notes = "The user's sex", required = true)
 	private Gender gender;
 
