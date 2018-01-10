@@ -2,6 +2,9 @@ package com.sheennae.serious.controller;
 
 import com.google.gson.*;
 import com.sheennae.serious.dao.UserRepository;
+import com.sheennae.serious.exception.NotFoundException;
+import com.sheennae.serious.exception.UnauthorizedException;
+import com.sheennae.serious.model.ErrorModel;
 import com.sheennae.serious.model.user.UserModel;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -22,33 +25,26 @@ public class MeController {
 
     @Autowired
     MeController(UserRepository userRepository) {
-
         this.userRepository = userRepository;
 
     }
 
-    @ApiOperation(value = "Get my information", response = JsonObject.class)
+    @RequestMapping(method = RequestMethod.GET, produces = "application/json")
+    @ApiOperation(value = "Get my information")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "SUCCESS"),
-            @ApiResponse(code = 401, message = "UNAUTHORIZED : doesn't exist or wrong format uuid in header"),
+            @ApiResponse(code = 200, message = "SUCCESS", response = UserModel.class),
+            @ApiResponse(code = 401, message = "UNAUTHORIZED", response = ErrorModel.class),
             @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR")
     })
-    @RequestMapping(value = "", method = RequestMethod.GET, produces = "application/json")
-    public @ResponseBody JsonObject getMeInfo(@RequestHeader String uuid, HttpServletResponse response) {
+    public @ResponseBody UserModel getMeInfo(@RequestHeader(defaultValue = "") String uuid) {
+        if (uuid == null || uuid.trim().length() == 0) {
+            throw new UnauthorizedException();
+        }
 
-        //todo
-        //check posting boolean
-        //check uuid
+        Optional<UserModel> optionalMe = userRepository.findByUuid(uuid);
+        UserModel me = optionalMe.orElseThrow(() -> new NotFoundException("Doesn't find user by uuid. Please register first."));
 
-        Optional<UserModel> me = userRepository.findByUuid(uuid);
-        JsonElement element = new Gson().toJsonTree(me.get());
-
-        JsonObject jsonObject = element.getAsJsonObject();
-
-        jsonObject.remove("createdAt");
-        jsonObject.addProperty("postToday", "false");
-
-        return jsonObject;
+        return me;
 
     }
 
@@ -58,8 +54,8 @@ public class MeController {
             @ApiResponse(code = 401, message = "UNAUTHORIZED : doesn't exist or wrong format uuid in header"),
             @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR")
     })
-    @RequestMapping(value = "", method = RequestMethod.PUT, produces = "application/json")
-    public @ResponseBody UserModel editMeInfo(@RequestHeader String uuid, HttpServletResponse response) {
+    @RequestMapping(method = RequestMethod.PUT, produces = "application/json")
+    public @ResponseBody UserModel editMeInfo(@RequestHeader String uuid) {
 
         //todo
 
@@ -83,5 +79,6 @@ public class MeController {
 
         return jsonObject;
     }
+
 
 }
