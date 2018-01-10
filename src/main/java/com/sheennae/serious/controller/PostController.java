@@ -22,7 +22,7 @@ import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping("/post")
-@Api(value = "PostController", description = "Operations pertaining to post in Serious application")
+@Api(value = "PostController", description = "Post Controller")
 public class PostController {
 
     private final UserRepository userRepository;

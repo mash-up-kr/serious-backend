@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/feed")
-@Api(value = "FeedController", description = "Operations pertaining to feed for post about subject in Serious application")
+@Api(value = "FeedController", description = "Feed Controller")
 public class FeedController {
 
 

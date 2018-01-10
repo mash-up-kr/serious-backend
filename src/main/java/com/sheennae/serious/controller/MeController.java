@@ -15,7 +15,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/me")
-@Api(value = "MeController", description = "Operations pertaining to me(themselves by user) in Serious application")
+@Api(value = "MeController", description = "Me Controller")
 public class MeController {
 
     private final UserRepository userRepository;

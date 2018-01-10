@@ -18,7 +18,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/subject")
-@Api(value = "SubjectController", description = "Operations pertaining to subject in Serious application")
+@Api(value = "SubjectController", description = "Subject Controller")
 public class SubjectController {
 
     private final SubjectRepository subjectRepository;
@@ -109,4 +109,5 @@ public class SubjectController {
         subjectRepository.save(subject);
         response.setStatus(204);
     }
+
 }
