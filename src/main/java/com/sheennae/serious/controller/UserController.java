@@ -1,7 +1,12 @@
 package com.sheennae.serious.controller;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.sheennae.serious.controller.user.NicknameManager;
+import com.sheennae.serious.exception.BadRequestException;
 import com.sheennae.serious.model.user.UserBiasModel;
 import com.sheennae.serious.model.user.UserModel;
 import com.sheennae.serious.model.user.UserNicknameModel;
@@ -12,15 +17,15 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping(value = "/user")
@@ -29,13 +34,15 @@ public class UserController {
 
     private final UserRepository userRepository;
     private final BiasRepository biasRepository;
+    private ObjectMapper mapper;
 
     private NicknameManager nicknameManager;
 
     @Autowired
-    public UserController(UserRepository userRepository, BiasRepository biasRepository) {
+    public UserController(UserRepository userRepository, BiasRepository biasRepository, ObjectMapper mapper) {
         this.userRepository = userRepository;
         this.biasRepository = biasRepository;
+        this.mapper = mapper;
 
         try {
             this.nicknameManager = new NicknameManager(userRepository.findAll());
@@ -52,19 +59,25 @@ public class UserController {
             @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR")
     })
     @RequestMapping(value = "/register", method = RequestMethod.POST, produces = "application/json")
-    public @ResponseBody UserModel register(@RequestBody UserJoinCommand command, HttpServletResponse response) {
-        // TODO 1. command validate
-        // TODO 2.     invalid data -> error
-        // TODO 3.     valid data -> select -> insert
-        // TODO                                update
-        // TODO 4. response
+    public @ResponseBody
+            JsonObject register(
+            @RequestBody
+            @Valid UserJoinCommand command,
+            BindingResult bindingResult,
+            HttpServletResponse response) throws JsonProcessingException {
 
-        System.out.println(command);
+        if (bindingResult.hasErrors()) {
+            response.setStatus(400);
+            throw new BadRequestException("invalid parameter form");
+        }
+
         Optional<UserModel> user = userRepository.findByUuid(command.getUuid());
         Optional<UserBiasModel> bias = biasRepository.findByBias(command.getBias());
+        String responseJson;
 
         if (user.isPresent()) {
-            return user.get();
+            responseJson = mapper.writeValueAsString(user.get());
+            return (JsonObject) new JsonParser().parse(responseJson);
         }
         else {
             UserModel userModel = new UserModel();
@@ -78,7 +91,8 @@ public class UserController {
 
             // TODO put nickname to nickname manager
 
-            return userRepository.save(userModel);
+            responseJson = mapper.writeValueAsString(userModel);
+            return (JsonObject) new JsonParser().parse(responseJson);
         }
 
     }
@@ -89,13 +103,13 @@ public class UserController {
             @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR")
     })
     @RequestMapping(value = "/{userId}", method = RequestMethod.GET, produces = "application/json")
-    public @ResponseBody UserModel getUserInfo(@PathVariable String userId, HttpServletResponse response) {
+    public @ResponseBody
+            JsonObject getUserInfo(@PathVariable String userId) throws JsonProcessingException {
 
         UserModel user = userRepository.findOne(Integer.parseInt(userId));
-        user.setCreatedAt(null);
-        user.setUuid(null);
+        String responseJson = mapper.writeValueAsString(user);
 
-        return user;
+        return (JsonObject) new JsonParser().parse(responseJson);
 
     }
 

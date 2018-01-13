@@ -3,15 +3,19 @@ package com.sheennae.serious.model.user.command;
 import com.sheennae.serious.model.user.UserBias;
 import com.sheennae.serious.model.user.Gender;
 
+import javax.validation.constraints.NotNull;
+
 public class UserJoinCommand {
 
+    @NotNull
     private String uuid;
+    @NotNull
     private String nickname;
+    @NotNull
     private UserBias bias;
     private String introduce;
     private int ageRange;
     private Gender gender;
-
 
     public String getUuid() {
         return uuid;

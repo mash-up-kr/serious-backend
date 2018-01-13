@@ -1,7 +1,6 @@
 package com.sheennae.serious.model.user;
 
-
-
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.time.LocalDateTime;
@@ -35,6 +34,7 @@ public class UserModel {
 	@ManyToOne
 	@JoinColumn(name = "user_bias_id", foreignKey = @ForeignKey(name = "FK_User_UserBias"), nullable = false)
 	@ApiModelProperty(notes = "The user's opinion about politics = ['EXTREME_LEFT', 'LEFT', 'MID', 'RIGHT', 'EXTREME_RIGHT']", required = true)
+	@JsonUnwrapped
 	private UserBiasModel bias;
 
 
