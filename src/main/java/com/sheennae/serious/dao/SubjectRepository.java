@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 
@@ -19,11 +20,14 @@ public interface SubjectRepository extends JpaRepository<SubjectModel, Integer> 
 
     Optional<SubjectModel> findByTitle(String title);
 
-    @Query(value = "select * from subject where date(subject.created_at) = :date", nativeQuery = true)
-    Optional<SubjectModel> findByCreatedAt(@Param("date") String date);
+    @Query(value = "select * from subject where date(subject.published_at) = date(:date) limit 1", nativeQuery = true)
+    Optional<SubjectModel> findByPublishedAt(@Param("date") String date);
 
 
-    @Query(value = "select * from subject where date(subject.published_at) = CAST(CURRENT_TIMESTAMP AS DATE) limit 1", nativeQuery = true)
-    Optional<SubjectModel> findToday();
+    @Query(value = "select * from subject where year(subject.published_at) = :year and month(subject.published_at) = :month", nativeQuery = true)
+    List<SubjectModel> findByMonth(@Param("year") int year, @Param("month") int month);
 
+
+    @Query(value = "select * from subject where date(subject.published_at) = date(:publishedAt) limit 1", nativeQuery = true)
+    Optional<SubjectModel> findToday(@Param("publishedAt") String publishedAt);
 }
