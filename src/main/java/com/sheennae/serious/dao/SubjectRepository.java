@@ -24,7 +24,7 @@ public interface SubjectRepository extends JpaRepository<SubjectModel, Integer> 
     Optional<SubjectModel> findByPublishedAt(@Param("date") String date);
 
 
-    @Query(value = "select * from subject where year(subject.published_at) = :year and month(subject.published_at) = :month", nativeQuery = true)
+    @Query(value = "select * from subject where year(subject.published_at) = :year and month(subject.published_at) = :month order by subject.published_at", nativeQuery = true)
     List<SubjectModel> findByMonth(@Param("year") int year, @Param("month") int month);
 
 
