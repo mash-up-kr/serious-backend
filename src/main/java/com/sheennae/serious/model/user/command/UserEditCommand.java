@@ -2,7 +2,7 @@ package com.sheennae.serious.model.user.command;
 
 import com.google.gson.annotations.SerializedName;
 import com.sheennae.serious.model.user.Gender;
-import com.sheennae.serious.model.user.UserBias;
+import com.sheennae.serious.dto.UserBias;
 
 public class UserEditCommand {
 

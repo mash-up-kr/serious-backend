@@ -1,6 +1,7 @@
 package com.sheennae.serious.model.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.sheennae.serious.dto.UserBias;
 
 import javax.persistence.*;
 import java.util.Objects;

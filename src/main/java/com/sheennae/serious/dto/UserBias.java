@@ -1,4 +1,4 @@
-package com.sheennae.serious.model.user;
+package com.sheennae.serious.dto;
 
 public enum UserBias {
 

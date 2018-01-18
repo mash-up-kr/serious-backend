@@ -61,8 +61,7 @@ public class UserController {
     @RequestMapping(value = "/register", method = RequestMethod.POST, produces = "application/json")
     public @ResponseBody
             JsonObject register(
-            @RequestBody
-            @Valid UserJoinCommand command,
+            @RequestBody @Valid UserJoinCommand command,
             BindingResult bindingResult,
             HttpServletResponse response) throws JsonProcessingException {
 
@@ -88,6 +87,10 @@ public class UserController {
             userModel.setAgeRange(command.getAgeRange());
             userModel.setBias(bias.get());
             userModel.setIntroduce(command.getIntroduce());
+
+
+            userRepository.save(userModel);
+            nicknameManager.put(command.getNickname());
 
             // TODO put nickname to nickname manager
 

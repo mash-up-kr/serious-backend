@@ -1,7 +1,7 @@
 package com.sheennae.serious.dao;
 
 import com.sheennae.serious.model.user.UserBiasModel;
-import com.sheennae.serious.model.user.UserBias;
+import com.sheennae.serious.dto.UserBias;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

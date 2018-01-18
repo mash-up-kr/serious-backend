@@ -1,6 +1,6 @@
 package com.sheennae.serious.model.user.command;
 
-import com.sheennae.serious.model.user.UserBias;
+import com.sheennae.serious.dto.UserBias;
 import com.sheennae.serious.model.user.Gender;
 
 import javax.validation.constraints.NotNull;
