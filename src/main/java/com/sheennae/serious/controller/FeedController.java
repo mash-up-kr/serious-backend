@@ -73,7 +73,6 @@ public class FeedController {
         UserDTO user = modelMapper.map(userModel, UserDTO.class);
 
         count = count <= 0 ? 15 : count;
-
         List<PostDTO> feed = new ArrayList<>();
         for (int i = 0; i < count; i++) {
             PostDTO post = new PostDTO();
@@ -83,7 +82,7 @@ public class FeedController {
             post.setTitle("나는 반대한다아!!!!");
             post.setContents("리플 떡상 가즈아!!!!!!!!!!!!!");
             post.setSubjectReaction(SubjectReaction.AGREE);
-            post.setMyReaction(PostReaction.AGREE);
+            post.setMyReaction(PostReaction.DISAGREE);
             post.setAgreeCount(10);
             post.setNeutralCount(11);
             post.setDisagreeCount(12);
