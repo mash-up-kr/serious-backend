@@ -23,4 +23,16 @@ public class SubjectDTO {
     @SerializedName("publishedAt")
     private LocalDateTime publishedAt;
 
+
+    @SerializedName("agreeCount")
+    private Integer agreeCount = null;
+
+
+    @SerializedName("neutralCount")
+    private Integer neutralCount = null;
+
+
+    @SerializedName("disagreeCount")
+    private Integer disagreeCount = null;
+
 }
