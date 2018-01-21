@@ -30,4 +30,6 @@ public interface SubjectRepository extends JpaRepository<SubjectModel, Integer> 
 
     @Query(value = "select * from subject where date(subject.published_at) = date(:publishedAt) limit 1", nativeQuery = true)
     Optional<SubjectModel> findToday(@Param("publishedAt") String publishedAt);
+
+    Optional<SubjectModel> findById(int id);
 }

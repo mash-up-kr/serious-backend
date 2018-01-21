@@ -4,8 +4,12 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.sheennae.serious.dao.*;
+import com.sheennae.serious.dto.PostDTO;
+import com.sheennae.serious.dto.SubjectDTO;
+import com.sheennae.serious.exception.NotFoundException;
 import com.sheennae.serious.model.post.PostModel;
 import com.sheennae.serious.model.post.command.PostCommand;
+import com.sheennae.serious.model.reaction.PostReaction;
 import com.sheennae.serious.model.reaction.Reaction;
 import com.sheennae.serious.model.reaction.SubjectPostReactionModel;
 import com.sheennae.serious.model.subject.SubjectModel;
@@ -13,11 +17,14 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 
 @RestController
@@ -30,6 +37,7 @@ public class PostController {
     private final SubjectRepository subjectRepository;
     private final SubjectPostReactionRepository subjectPostReactionRepository;
     private final SubjectReactionRepository subjectReactionRepository;
+    private final ModelMapper modelMapper = new ModelMapper();
 
     @Autowired
     public PostController(UserRepository userRepository,
@@ -46,7 +54,7 @@ public class PostController {
 
     }
 
-    @ApiOperation(value = "The post is written by user", response = JsonObject.class)
+    @ApiOperation(value = "The post is written by user", response = PostDTO.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "SUCCESS"),
             @ApiResponse(code = 400, message = "BAD_REQUEST : none Essential paramter or doesn't suitable parameter"),
@@ -55,32 +63,43 @@ public class PostController {
             @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR")
     })
     @RequestMapping(value = "", method = RequestMethod.POST, produces = "application/json")
-    public @ResponseBody JsonObject create(@RequestHeader(value = "userId") String userId,
+    public @ResponseBody PostDTO create(@RequestHeader(value = "userId") String userId,
                                            @RequestBody PostCommand command,
                                            HttpServletResponse response) {
 
+        //is valid userid or uuid??
         System.out.println(command.getSubjectId());
 
-        PostModel post = new PostModel();
+        PostDTO postDTO = new PostDTO();
+
+        PostModel postModel = new PostModel();
+        SubjectModel subjectModel;
         SubjectPostReactionModel subjectPostReaction = new SubjectPostReactionModel();
 
-        post.setTitle(command.getTitle());
-        post.setContents(command.getContents());
+        postModel.setTitle(command.getTitle());
+        postModel.setContents(command.getContents());
 
-        SubjectModel subjectModel = subjectRepository.findOne(Integer.parseInt(command.getSubjectId()));
+        postDTO.setTitle(command.getTitle());
+        postDTO.setContents(command.getContents());
 
-        if (subjectModel != null) {
-            post.setSubject(subjectModel);
-        }
+        SubjectDTO subjectDTO = subjectRepository
+                .findById(Integer.parseInt(command.getSubjectId()))
+                .map(item -> modelMapper.map(item, SubjectDTO.class))
+                .orElseThrow(() -> new NotFoundException(String.format("There's no subject correspond to subject ID : %s", command.getSubjectId())));
 
-        post.setAuthor(userRepository.findOne(Integer.parseInt(userId)));
-        post = postRepository.save(post);
+        subjectModel = subjectRepository.findOne(Integer.parseInt(command.getSubjectId()));
+
+        postModel.setSubject(subjectModel);
+        postDTO.setSubject(subjectDTO);
+
+        postModel.setAuthor(userRepository.findOne(Integer.parseInt(userId)));
+        postModel = postRepository.save(postModel);
 
         /*
          * subjectPostReactionModel is also created with post
          */
 
-        subjectPostReaction.setPost(post);
+        subjectPostReaction.setPost(postModel);
         subjectPostReaction.setReactedTime(LocalDateTime.now());
         subjectPostReaction.setSubject(subjectModel);
 
@@ -89,20 +108,12 @@ public class PostController {
         subjectPostReaction.setSubjectReaction(subjectReactionRepository.findByReaction(command.getReaction()).get());
         subjectPostReactionRepository.save(subjectPostReaction);
 
-        /*
-         * insert field for return json
-         */
+        postDTO.setAgreeCount(0);
+        postDTO.setDisagreeCount(0);
+        postDTO.setNeutralCount(0);
+        postDTO.setMyReaction(null);
 
-        JsonElement element = new Gson().toJsonTree(post);
-        JsonObject jsonObject = element.getAsJsonObject();
-
-        jsonObject.addProperty("subjectReaction", subjectPostReaction.getSubjectReaction().getReaction().toString());
-        jsonObject.addProperty("agreeCount", "30");
-        jsonObject.addProperty("neutralCount", "30");
-        jsonObject.addProperty("disagreeCount", "30");
-        jsonObject.addProperty("myReaction", Reaction.AGREE.toString());
-
-        return jsonObject;
+        return postDTO;
     }
 
     @ApiOperation(value = "React about the post : [AGREE]")
