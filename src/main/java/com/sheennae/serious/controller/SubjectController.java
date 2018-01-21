@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.Type;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -75,11 +76,18 @@ public class SubjectController {
         }
 
         List<SubjectModel> datas = subjectRepository.findByMonth(year, month);
-        Type type = new TypeToken<List<SubjectModel>>(){}.getType();
+        List<SubjectDTO> dtos = new ArrayList<>(datas.size());
+        for (SubjectModel data : datas) {
+            SubjectDTO dto = modelMapper.map(data, SubjectDTO.class);
+            dto.setAgreeCount(100);
+            dto.setNeutralCount(20);
+            dto.setDisagreeCount(140);
+            dtos.add(dto);
+        }
 
         BaseListModel<SubjectDTO> listModel = new BaseListModel<>();
         listModel.setCount(datas.size());
-        listModel.setDatas(modelMapper.map(datas, type));
+        listModel.setDatas(dtos);
         return listModel;
     }
 
