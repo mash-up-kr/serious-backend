@@ -3,13 +3,18 @@ package com.sheennae.serious.model.post.command;
 
 import com.sheennae.serious.model.reaction.Reaction;
 
+import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 public class PostCommand {
 
+    @NotNull
     private String title;
+    @NotNull
     private String contents;
+    @NotNull
     private String subjectId;
+    @NotNull
     private Reaction reaction;
 
     public String getTitle() {

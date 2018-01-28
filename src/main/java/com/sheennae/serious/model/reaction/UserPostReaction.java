@@ -30,6 +30,11 @@ public class UserPostReaction {
     @JoinColumn(name = "post_reaction_id", foreignKey = @ForeignKey(name = "FK_UserPostReaction_PostReaction"))
     private PostReaction postReaction;
 
+    @PrePersist
+    public void persist() {
+        this.reactedTime = LocalDateTime.now();
+    }
+
     public int getId() {
         return id;
     }

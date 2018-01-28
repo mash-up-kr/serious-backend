@@ -1,10 +1,10 @@
 INSERT INTO `subject_reaction` (`reaction`) VALUES ('AGREE');
 INSERT INTO `subject_reaction` (`reaction`) VALUES ('DISAGREE');
-INSERT INTO `subject_reaction` (`reaction`) VALUES ('NETURAL');
+INSERT INTO `subject_reaction` (`reaction`) VALUES ('NEUTRAL');
 
 INSERT INTO `post_reaction` (`reaction`) VALUES ('AGREE');
 INSERT INTO `post_reaction` (`reaction`) VALUES ('DISAGREE');
-INSERT INTO `post_reaction` (`reaction`) VALUES ('NETURAL');
+INSERT INTO `post_reaction` (`reaction`) VALUES ('NEUTRAL');
 
 INSERT INTO `user_bias` (`bias`) VALUES ('EXTREME_LEFT');
 INSERT INTO `user_bias` (`bias`) VALUES ('LEFT');
