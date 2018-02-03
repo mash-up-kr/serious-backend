@@ -72,29 +72,84 @@ public class FeedController {
 
         UserDTO user = modelMapper.map(userModel, UserDTO.class);
 
-        count = count <= 0 ? 15 : count;
         List<PostDTO> feed = new ArrayList<>();
-        for (int i = 0; i < count; i++) {
-            PostDTO post = new PostDTO();
-            post.setId(1);
-            post.setAuthor(user);
-            post.setSubject(modelMapper.map(subject, SubjectDTO.class));
-            post.setTitle("나는 반대한다아!!!!");
-            post.setContents("리플 떡상 가즈아!!!!!!!!!!!!!");
-            post.setSubjectReaction(SubjectReaction.AGREE);
-            post.setMyReaction(PostReaction.DISAGREE);
-            post.setAgreeCount(10);
-            post.setNeutralCount(11);
-            post.setDisagreeCount(12);
-            post.setCreatedAt(LocalDateTime.now());
 
-            feed.add(post);
-        }
+        PostDTO post = new PostDTO();
+        post.setId(1);
+        post.setAuthor(user);
+        post.setSubject(modelMapper.map(subject, SubjectDTO.class));
+        post.setTitle("나는 포괄임금제를 찬성한다.");
+        post.setContents("포괄임금제는 정말 좋은 제도이다.\n왜냐하면 그 포괄임금제 때문에 나의 퇴직금을 올려주기 때문이다.");
+        post.setSubjectReaction(SubjectReaction.AGREE);
+        post.setMyReaction(PostReaction.DISAGREE);
+        post.setAgreeCount(10);
+        post.setNeutralCount(11);
+        post.setDisagreeCount(12);
+        post.setCreatedAt(LocalDateTime.now());
+        feed.add(post);
+
+        PostDTO post2 = new PostDTO();
+        post2.setId(2);
+        post2.setAuthor(user);
+        post2.setSubject(modelMapper.map(subject, SubjectDTO.class));
+        post2.setTitle("포괄임금제는 없어져야 할 제도이다.");
+        post2.setContents("포괄임금제는 그냥 야근수당을 제대로 주지 않으려는 기업의 속임수일 뿐이다. 노동자의 노동을 업신 여기는 아주 나쁜 제도 중 하나라고 생각한다.");
+        post2.setSubjectReaction(SubjectReaction.DISAGREE);
+        post2.setMyReaction(PostReaction.AGREE);
+        post2.setAgreeCount(12);
+        post2.setNeutralCount(11);
+        post2.setDisagreeCount(10);
+        post2.setCreatedAt(LocalDateTime.now());
+        feed.add(post2);
+
+        PostDTO post3 = new PostDTO();
+        post3.setId(3);
+        post3.setAuthor(user);
+        post3.setSubject(modelMapper.map(subject, SubjectDTO.class));
+        post3.setTitle("포괄임금제가 중요한 것이 아니다.");
+        post3.setContents("수당은 지금 현제 중요한 사안이 아니다. 제대로된 근무 환경을 조성하는 것이 중요하다. 그것을 조성하지 않고 수당을 얘기하는 것은 부적절한 집행인 것 같다.");
+        post3.setSubjectReaction(SubjectReaction.NEUTRAL);
+        post3.setMyReaction(PostReaction.AGREE);
+        post3.setAgreeCount(12);
+        post3.setNeutralCount(11);
+        post3.setDisagreeCount(10);
+        post3.setCreatedAt(LocalDateTime.now());
+        feed.add(post3);
+
+        PostDTO post4 = new PostDTO();
+        post4.setId(4);
+        post4.setAuthor(user);
+        post4.setSubject(modelMapper.map(subject, SubjectDTO.class));
+        post4.setTitle("포괄임금제가 뭐죠?");
+        post4.setContents("아몰랑 걍 짜증남");
+        post4.setSubjectReaction(SubjectReaction.NEUTRAL);
+        post4.setMyReaction(PostReaction.NEUTRAL);
+        post4.setAgreeCount(12);
+        post4.setNeutralCount(11);
+        post4.setDisagreeCount(10);
+        post4.setCreatedAt(LocalDateTime.now());
+        feed.add(post4);
+
+
+        PostDTO post5 = new PostDTO();
+        post5.setId(5);
+        post5.setAuthor(user);
+        post5.setSubject(modelMapper.map(subject, SubjectDTO.class));
+        post5.setTitle("포괄임금제 그래요 괜찮다고 칩시다.");
+        post5.setContents("포괄임금제 괜찮습니다 그래도 최소한 6000천만은 줍시다 ㅇㅋ?");
+        post5.setSubjectReaction(SubjectReaction.AGREE);
+        post5.setMyReaction(PostReaction.AGREE);
+        post5.setAgreeCount(12);
+        post5.setNeutralCount(11);
+        post5.setDisagreeCount(10);
+        post5.setCreatedAt(LocalDateTime.now());
+        feed.add(post5);
+
 
         BaseListModel<PostDTO> feedModel = new BaseListModel<>();
         feedModel.setDatas(feed);
-        feedModel.setCount(400);
-        feedModel.setCursor(feed.get(feed.size() - 1).getId());
+        feedModel.setCount(5);
+        feedModel.setCursor(feed.size() < 15 ? 0 : feed.get(feed.size() - 1).getId());
         return feedModel;
     }
 
